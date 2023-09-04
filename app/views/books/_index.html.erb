@@ -5,6 +5,8 @@
       <th>Title</th>
       <th>Opinion</th>
       <th colspan="3"></th>
+      <th colspan="4"></th>
+
     </tr>
   </thead>
   <tbody>
@@ -15,9 +17,28 @@
           <% end %>
         </td>
         <td><%= link_to book.title,book %></td>
+
         <td><%= book.body %></td>
+
+                <% if book.favorited_by?(current_user) %>
+            <td>
+                  <%= link_to book_favorites_path(book), method: :delete do %>
+                  <p class="text-danger">♥<%= book.favorites.count %></p>
+                  <% end %>
+            </td>
+                  <% else %>
+            <td>
+                  <%= link_to book_favorites_path(book), method: :post do %>
+                  ♥<%= book.favorites.count %>
+                  <% end %>
+            </td>
+                <% end %>
+
+        <td><%= book.book_comments.count %>コメント</td>
+
       </tr>
     <% end %>
   </tbody>
 </table>
+
 
