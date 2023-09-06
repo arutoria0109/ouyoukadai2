@@ -35,5 +35,23 @@ class User < ApplicationRecord
     relationships.find_by(followed_id: user_id).destroy
   end
 
+  # 検索方法分岐 (nameは検索対象であるusersテーブル内のカラム名)
+
+  def self.looks(search, word)
+
+    if search == "perfect_match"
+      @user = User.where("name LIKE?", "#{word}")#完全一致
+    elsif search == "forward_match"
+      @user = User.where("name LIKE?", "#{word}%")#前方一致
+    elsif search == "backward_match"
+      @user = User.where("name LIKE?", "%#{word}")#後方一致
+    elsif search == "partial_match"
+      @user = User.where("name LIKE?", "%#{word}%")#部分一致
+    else
+      @user = User.all
+    end
+
+  end
+
 end
 
